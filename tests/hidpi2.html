@@ -185,9 +185,20 @@
       screenY: 0
     };
 
+    let universalEventProp = (ev, prop) => {
+      return 'touches' in ev ? ev.touches[0][prop] : ev[prop];
+    }
+    let getOffsetX = ev => {
+      var rect = ev.target.getBoundingClientRect();
+      return universalEventProp(ev, 'pageX') - rect.left;
+    }
+    let getOffsetY = ev => {
+      var rect = ev.target.getBoundingClientRect();
+      return universalEventProp(ev, 'pageY') - rect.top;
+    }
     let dragMove = ev => {
-      let deltaX = ev.screenX - dragInfo.screenX;
-      let deltaY = ev.screenY - dragInfo.screenY;
+      let deltaX = universalEventProp(ev, 'screenX') - dragInfo.screenX;
+      let deltaY = universalEventProp(ev, 'screenY') - dragInfo.screenY;
       dragInfo.screenX += deltaX;
       dragInfo.screenY += deltaY;
       let border_rect = dragInfo.target.getClientRects()[0];
@@ -215,10 +226,10 @@
         return;
       dragInfo.target = ev.target;
       dragInfo.isMouse = ev.type == 'mousedown';
-      dragInfo.screenX = ev.screenX;
-      dragInfo.screenY = ev.screenY;
-      dragInfo.isResize = (ev.offsetX > dragInfo.target.offsetWidth - 50) &&
-        (ev.offsetY > dragInfo.target.offsetHeight - 50);
+      dragInfo.screenX = universalEventProp(ev, 'screenX');
+      dragInfo.screenY = universalEventProp(ev, 'screenY');
+      dragInfo.isResize = (getOffsetX(ev) > dragInfo.target.offsetWidth - 50) &&
+        (getOffsetY(ev) > dragInfo.target.offsetHeight - 50);
       if (dragInfo.isResize)
         console.log('isResize');
       if (dragInfo.isMouse) {
