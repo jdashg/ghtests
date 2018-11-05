@@ -1,2 +1,2 @@
 # ghtests
-[tests everywhere](https://atotic.github.io/ghtests/)
+[tests everywhere](https://atotic.github.io/ghtests/tests)
