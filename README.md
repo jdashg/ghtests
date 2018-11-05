@@ -1,2 +1,2 @@
 # ghtests
-tests everywhere
+[tests everywhere](https://atotic.github.io/ghtests/)
